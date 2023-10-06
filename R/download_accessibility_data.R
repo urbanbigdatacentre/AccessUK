@@ -36,7 +36,7 @@ download_accessibility_data <- function(force_update = FALSE, data_dir = system.
 
   # Check if data already exists and handle force_update
   if (file.exists(zip_file) && !force_update) {
-    if (!quiet) message("Using cached accessibility data from ", zip_file)
+    if (!quiet) message("Using cached accessibility data from ", zip_file, "\nThis can take a few minutes only the first time.")
     return(data_dir)
   }
 

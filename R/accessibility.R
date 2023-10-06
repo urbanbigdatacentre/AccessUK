@@ -4,7 +4,7 @@
 #' downloads it if necessary, and then loads the desired dataset based on the provided service and mode.
 #' The function can also subset the data based on provided origin locations.
 #'
-#' @param origins Vector of origin LSOA/DZ codes. If NULL (default), all locations are returned.
+#' @param from Vector of origin LSOA/DZ codes. If NULL (default), all locations are returned.
 #' @param service Character string specifying the desired service (e.g., "employment", "supermarket", "school"). Default is "employment".
 #' @param mode Character string specifying the transportation mode. Can be "public_transport" (default) or "car".
 #'
@@ -19,7 +19,7 @@
 #' \dontrun{
 #' accessibility(service = 'employment', mode = "public_transport")
 #' }
-accessibility <- function(origins = NULL, service = 'employment', mode = "public_transport") {
+accessibility <- function(from = NULL, service = 'employment', mode = "public_transport") {
   data_dir <- system.file("data", package = "AccessUK")
 
   # Check if data directory exists and has data
@@ -30,7 +30,9 @@ accessibility <- function(origins = NULL, service = 'employment', mode = "public
   # Check mode
   if(mode == "public_transport"){
     mode <- "pt"
-  } else if (mode != "car"){
+  } else if (mode == "car"){
+    mode <- "car"
+  } else {
     stop("Mode requested not available. It should be \"car\" or \"public_transport\"")
   }
 
@@ -49,9 +51,9 @@ accessibility <- function(origins = NULL, service = 'employment', mode = "public
   con <- DBI::dbConnect(duckdb::duckdb())
 
   # Define if reading all the DF or just a subset
-  if(!is.null(origins)){
+  if(!is.null(from)){
     # Convert the vector to a comma-separated string
-    rows_string <- paste(sprintf("'%s'", origins), collapse = ",")
+    rows_string <- paste(sprintf("'%s'", from), collapse = ",")
     query <- paste0("SELECT * FROM '", access_file, "' WHERE geo_code in (", rows_string, ");")
     access_indices <- DBI::dbGetQuery(con, query)
   } else {

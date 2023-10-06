@@ -4,14 +4,10 @@
 \alias{accessibility}
 \title{Access the Accessibility Indicators Dataset for GB}
 \usage{
-accessibility(
-  origins = NULL,
-  service = "employment",
-  mode = "public_transport"
-)
+accessibility(from = NULL, service = "employment", mode = "public_transport")
 }
 \arguments{
-\item{origins}{Vector of origin LSOA/DZ codes. If NULL (default), all locations are returned.}
+\item{from}{Vector of origin LSOA/DZ codes. If NULL (default), all locations are returned.}
 
 \item{service}{Character string specifying the desired service (e.g., "employment", "supermarket", "school"). Default is "employment".}
 
