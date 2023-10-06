@@ -4,10 +4,21 @@
 \alias{download_accessibility_data}
 \title{Download and Extract Accessibility Indicators Dataset for GB}
 \usage{
-download_accessibility_data()
+download_accessibility_data(
+  force_update = FALSE,
+  data_dir = system.file(package = "AccessUK"),
+  quiet = FALSE
+)
+}
+\arguments{
+\item{force_update}{Logical, whether to re-download the data if it already exists.}
+
+\item{data_dir}{The directory where the data should be stored. Default is "data" in the package's installation directory.}
+
+\item{quiet}{Logical, suppresses messages when set to TRUE.}
 }
 \value{
-NULL Invisibly. The function is called for its side effects.
+Path to the extracted data directory invisibly.
 }
 \description{
 This function downloads the accessibility indicators dataset for Great Britain from Zenodo,
