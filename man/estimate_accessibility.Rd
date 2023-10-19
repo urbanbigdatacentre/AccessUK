@@ -8,7 +8,8 @@ estimate_accessibility(
   travel_matrix = NULL,
   travel_cost = NULL,
   weights = NULL,
-  time_cut = NULL
+  time_cut = NULL,
+  additional_group = NULL
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ estimate_accessibility(
 \item{weights}{A data frame with a column 'id' and one or more columns representing the weights of opportunities at destinations.}
 
 \item{time_cut}{A numeric vector representing the threshold in cumulative accessibility measures, $t$.}
+
+\item{additional_group}{A string indicating if the output should be grouped by an additional column in the travel_matrix, e.g. time of day.}
 }
 \value{
 A data frame containing computed accessibility values for each time cut and weight column.

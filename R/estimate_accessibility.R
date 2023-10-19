@@ -8,6 +8,7 @@
 #' @param travel_cost A string representing the name of the column to use for $c_ij$.
 #' @param weights A data frame with a column 'id' and one or more columns representing the weights of opportunities at destinations.
 #' @param time_cut A numeric vector representing the threshold in cumulative accessibility measures, $t$.
+#' @param additional_group A string indicating if the output should be grouped by an additional column in the travel_matrix, e.g. time of day.
 #'
 #' @return A data frame containing computed accessibility values for each time cut and weight column.
 #' @import DBI
@@ -28,7 +29,8 @@ estimate_accessibility <- function(
     travel_matrix = NULL,
     travel_cost = NULL,
     weights = NULL,
-    time_cut = NULL
+    time_cut = NULL,
+    additional_group = NULL
 ) {
   # Establish DuckDB connection
   conn <- DBI::dbConnect(duckdb::duckdb())
@@ -65,12 +67,27 @@ estimate_accessibility <- function(
   sum_expressions <- unlist(sum_expressions)
 
   # Create the SQL query
-  cum_access_query <- paste0(
-    "SELECT a.from_id, ", paste(sum_expressions, collapse = ", "), "
-    FROM ", travel_matrix, " AS a
-    LEFT JOIN weights AS b ON a.to_id = b.id
-    GROUP BY a.from_id;"
-  )
+  if(is.null(additional_group)){
+    cum_access_query <- paste0(
+      "SELECT a.from_id, ",
+      paste(sum_expressions, collapse = ", "), "
+      FROM ", travel_matrix, " AS a
+      LEFT JOIN weights AS b ON a.to_id = b.id
+      GROUP BY a.from_id
+      ORDER BY a.from_id;"
+    )
+    # Including additonal grouping
+  } else {
+    additional_group <- paste(paste0("a.", additional_group), collapse = ', ')
+    cum_access_query <- paste0(
+      "SELECT a.from_id, ", additional_group, ", ",
+      paste(sum_expressions, collapse = ", "), "
+      FROM ", travel_matrix, " AS a
+      LEFT JOIN weights AS b ON a.to_id = b.id
+      GROUP BY a.from_id, ", additional_group, "
+      ORDER BY ", additional_group, ", a.from_id;"
+    )
+  }
 
   # Run the query
   accessibility <- DBI::dbGetQuery(conn, cum_access_query)
