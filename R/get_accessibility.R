@@ -17,14 +17,19 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' accessibility(service = 'employment', mode = "public_transport")
+#'   get_accessibility(service = 'employment', mode = "public_transport")
 #' }
-accessibility <- function(from = NULL, service = 'employment', mode = "public_transport") {
-  data_dir <- system.file("data", package = "AccessUK")
+get_accessibility <- function(
+    from = NULL,
+    service = 'employment',
+    mode = "public_transport"
+  ){
 
-  # Check if data directory exists and has data
+  # Check if data directory exists and has data, if not, download the data
+  data_dir <- system.file("data", package = "AccessUK")
   if (!dir.exists(data_dir) || length(list.files(data_dir)) == 0) {
     download_accessibility_data()
+    data_dir <- system.file("data", package = "AccessUK")
   }
 
   # Check mode
