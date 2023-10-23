@@ -35,18 +35,8 @@ estimate_accessibility <- function(
   # Establish DuckDB connection
   conn <- DBI::dbConnect(duckdb::duckdb())
 
-  # Check for presence of csv or parquet files
-  list_files <- list.files(travel_matrix, recursive = TRUE, full.names = TRUE)
-  if (sum(grepl('\\.parquet$', list_files)) > 0) {
-    travel_matrix <- file.path(travel_matrix, "*.parquet")
-  } else if (sum(grepl('\\.csv$', list_files)) > 0) {
-    travel_matrix <- file.path(travel_matrix, "*.csv")
-  } else {
-    stop("No parquet or csv files found in the specified directory.")
-  }
-
-  # Format travel matrix directory
-  travel_matrix <- paste0("'", travel_matrix, "'")
+  # Format travel matrix directory depeding on type of file, ie. csv or .parquet
+  travel_matrix <- format_tm_directory(travel_matrix)
 
   # Write weights at destination to the database
   DBI::dbWriteTable(conn, 'weights', weights, overwrite = TRUE)
