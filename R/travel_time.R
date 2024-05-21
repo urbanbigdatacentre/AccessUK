@@ -35,7 +35,17 @@ travel_time <- function(from = NULL) {
   if(!is.null(from)){
     # Convert the vector to a comma-separated string
     rows_string <- paste(sprintf("'%s'", from), collapse = ",")
-    query <- paste0("SELECT * FROM read_csv_auto('", ttm_file, "', header=true) WHERE fromId in (", rows_string, ");")
+    query <- paste0("
+      SELECT *
+      FROM read_csv(
+              '", ttm_file, "',
+              header=true,
+              auto_detect=true,
+              allow_quoted_nulls=true,
+              nullstr='NA'
+              )
+      WHERE fromId in (", rows_string, ");
+    ")
     ttm <- DBI::dbGetQuery(con, query)
   } else {
     query <- paste0("SELECT * FROM read_csv_auto('", ttm_file, "', header=true);")
