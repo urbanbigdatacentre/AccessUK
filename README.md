@@ -24,5 +24,5 @@ With devtools installed, you can now install the AccessUK package:
 ```R
 devtools::install_github("urbanbigdatacentre/AccessUK")
 ```
-
+## Use
 
