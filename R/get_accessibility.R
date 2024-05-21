@@ -17,7 +17,13 @@
 #' @export
 #' @examples
 #' \dontrun{
-#'   get_accessibility(service = 'employment', mode = "public_transport")
+#'
+#'   get_accessibility(from = "S01006616", service = 'employment', mode = "public_transport")
+#'
+#'   Or use a vector for multiple origins
+#'
+#'   glasgow_cc = c("S01010272", "S01010265")
+#'   get_accessibility(from = glasgow_cc)
 #' }
 get_accessibility <- function(
     from = NULL,
