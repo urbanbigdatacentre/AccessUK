@@ -49,7 +49,8 @@
 #'
 #' @importFrom sf st_as_sf st_geometry_type st_crs st_transform st_intersection st_read
 #' @importFrom checkmate assert_logical
-#' @keywords internal
+#' @export
+#'
 my_accessibility <- function(
     destinations = NULL,
     time_cut = NULL,
