@@ -1,4 +1,4 @@
-#' Download and Extract Accessibility Indicators Dataset for GB
+#' Download and extract Accessibility Indicators Dataset for GB
 #'
 #' This function downloads the accessibility indicators dataset for Great Britain from Zenodo,
 #' extracts the content, and then removes the ZIP file.
@@ -10,7 +10,7 @@
 #' @return Path to the extracted data directory invisibly.
 #' @export
 #' @examples
-#' download_extract_GB_data()
+#' download_accessibility_data()
 
 download_accessibility_data <- function(force_update = FALSE, data_dir = system.file(package = "AccessUK"), quiet = FALSE) {
   # Check input
@@ -35,9 +35,10 @@ download_accessibility_data <- function(force_update = FALSE, data_dir = system.
   }
 
   # Check if data already exists and handle force_update
-  if (file.exists(zip_file) && !force_update) {
-    if (!quiet) message("Using cached accessibility data from ", zip_file, "\nThis can take a few minutes only the first time.")
-    return(data_dir)
+  accessibility_dir <- file.path(data_dir, 'accessibility_indicators_gb')
+  if (dir.exists(zip_file) | force_update == FALSE) {
+    if (!quiet) message("Using cached accessibility data.")
+    return(invisible(data_dir))
   }
 
   # Download the file
@@ -50,4 +51,6 @@ download_accessibility_data <- function(force_update = FALSE, data_dir = system.
   # Remove the ZIP file
   file.remove(zip_file)
 
+  # Return data dir
+  return(invisible(data_dir))
 }
