@@ -38,8 +38,11 @@ estimate_accessibility <- function(
   conn <- DBI::dbConnect(duckdb::duckdb())
 
   # Check if TTM is a CSV or Parquet file, if not format as directory
-  if(!grepl("\\.csv$|\\.parquet$", travel_matrix)){
-    # Format travel matrix directory depending on type of file, ie. csv or .parquet
+  if(grepl("\\.csv$|\\.parquet$", travel_matrix)){
+    # Enclose file path with single quotation
+    travel_matrix <- paste0("'", travel_matrix, "'")
+  } else {
+    # Format travel matrix directory
     travel_matrix <- format_tm_directory(travel_matrix)
   }
 
@@ -66,7 +69,7 @@ estimate_accessibility <- function(
     cum_access_query <- paste0(
       "SELECT a.from_id, ",
       paste(sum_expressions, collapse = ", "), "
-      FROM '", travel_matrix, "' AS a
+      FROM ", travel_matrix, " AS a
       LEFT JOIN weights AS b ON a.to_id = b.id
       GROUP BY a.from_id
       ORDER BY a.from_id;"
@@ -77,7 +80,7 @@ estimate_accessibility <- function(
     cum_access_query <- paste0(
       "SELECT a.from_id, ", additional_group, ", ",
       paste(sum_expressions, collapse = ", "), "
-      FROM '", travel_matrix, "' AS a
+      FROM ", travel_matrix, " AS a
       LEFT JOIN weights AS b ON a.to_id = b.id
       GROUP BY a.from_id, ", additional_group, "
       ORDER BY ", additional_group, ", a.from_id;"
@@ -87,8 +90,8 @@ estimate_accessibility <- function(
   # If TTM is in CSV format, use explicit read_csv function
   if (grepl("\\.csv$", travel_matrix)) {
     cum_access_query <- gsub(
-      paste0("FROM '", travel_matrix, "' AS a"),
-      paste0("FROM read_csv('", travel_matrix, "', auto_detect=true, header=true,  nullstr='", csv_null_string, "') AS a"),
+      paste0("FROM ", travel_matrix, " AS a"),
+      paste0("FROM read_csv(", travel_matrix, ", auto_detect=true, header=true,  nullstr='", csv_null_string, "') AS a"),
       cum_access_query
     )
   }
