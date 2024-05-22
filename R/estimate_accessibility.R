@@ -77,7 +77,7 @@ estimate_accessibility <- function(
     cum_access_query <- paste0(
       "SELECT a.from_id, ", additional_group, ", ",
       paste(sum_expressions, collapse = ", "), "
-      FROM ", travel_matrix, " AS a
+      FROM '", travel_matrix, "' AS a
       LEFT JOIN weights AS b ON a.to_id = b.id
       GROUP BY a.from_id, ", additional_group, "
       ORDER BY ", additional_group, ", a.from_id;"
