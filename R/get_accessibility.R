@@ -32,11 +32,7 @@ get_accessibility <- function(
   ){
 
   # Check if data directory exists and has data, if not, download the data
-  data_dir <- system.file("data", package = "AccessUK")
-  if (!dir.exists(data_dir) || length(list.files(data_dir)) == 0) {
-    download_accessibility_data()
-    data_dir <- system.file("data", package = "AccessUK")
-  }
+  data_dir <- download_accessibility_data()
 
   # Check mode
   if(mode == "public_transport"){
