@@ -16,6 +16,7 @@
 #'
 #' @return A data frame containing the computed accessibility estimates.
 #'
+#' @export
 #' @examples
 #' \dontrun{
 #' # Example usage with SF points
@@ -44,7 +45,7 @@
 #'
 #' @importFrom sf st_as_sf st_geometry_type st_crs st_transform st_intersection st_read
 #' @importFrom checkmate assert_logical
-#' @export
+#
 my_accessibility <- function(
     destinations,
     time_cut,
