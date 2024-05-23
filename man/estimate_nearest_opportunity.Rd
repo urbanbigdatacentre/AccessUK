@@ -8,7 +8,8 @@ estimate_nearest_opportunity(
   travel_matrix = NULL,
   travel_cost = NULL,
   weights = NULL,
-  additional_group = NULL
+  additional_group = NULL,
+  csv_null_string = "NA"
 )
 }
 \arguments{
@@ -22,7 +23,8 @@ It must be a valid column name from the travel matrix.}
 It must contain an 'id' column and one or more weight columns.}
 
 \item{additional_group}{Optional. A column name for additional grouping in the SQL query.
-Default is \code{NULL}.}
+Default is \code{NULL}.
+#' @param csv_null_string A string indicating how null values are stored in a CSV file. Default "NA".}
 }
 \value{
 A dataframe containing the nearest opportunities based on the given travel matrix,

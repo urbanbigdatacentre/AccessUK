@@ -2,7 +2,7 @@
 % Please edit documentation in R/my_accessibility.R
 \name{my_accessibility}
 \alias{my_accessibility}
-\title{Compute Accessibility Estimates}
+\title{Compute custom accessibility measures}
 \usage{
 my_accessibility(destinations, time_cut, additional_group = NULL)
 }
@@ -16,7 +16,7 @@ This parameter is required and cannot be empty.}
 \item{additional_group}{Optional. A character string specifying an additional grouping variable.}
 }
 \value{
-A data frame containing the computed accessibility estimates.
+A data frame containing the custom accessibility estimates.
 }
 \description{
 This function computes custom accessibility estimates using precomputed travel time matrices from the PTAI dataset and user-inputted destination data.
