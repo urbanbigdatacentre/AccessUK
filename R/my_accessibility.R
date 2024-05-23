@@ -1,4 +1,4 @@
-#' Compute Accessibility Estimates
+#' Compute custom accessibility measures
 #'
 #' This function computes custom accessibility estimates using precomputed travel time matrices from the PTAI dataset and user-inputted destination data.
 #' It can handle destinations represented by SF points or pre-aggregated weights by LSOA.
@@ -14,7 +14,7 @@
 #' In the background, it uses 2011 geometries sourced from InFuse UK Data Service layers.
 #' Please read the user Terms and Conditions.
 #'
-#' @return A data frame containing the computed accessibility estimates.
+#' @return A data frame containing the custom accessibility estimates.
 #'
 #' @export
 #' @examples
