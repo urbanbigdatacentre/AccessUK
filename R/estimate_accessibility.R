@@ -9,6 +9,7 @@
 #' @param weights A data frame with a column 'id' and one or more columns representing the weights of opportunities at destinations.
 #' @param time_cut A numeric vector representing the threshold in cumulative accessibility measures, $t$.
 #' @param additional_group A string indicating if the output should be grouped by an additional column in the travel_matrix, e.g. time of day.
+#' @param csv_null_string A string indicating how null values are stored in a CSV file. Default "NA".
 #'
 #' @return A data frame containing computed accessibility values for each time cut and weight column.
 #' @import DBI
@@ -88,7 +89,7 @@ estimate_accessibility <- function(
   }
 
   # If TTM is in CSV format, use explicit read_csv function
-  if (grepl("\\.csv$", travel_matrix)) {
+  if (grepl("\\.csv'$", travel_matrix)) {
     cum_access_query <- gsub(
       paste0("FROM ", travel_matrix, " AS a"),
       paste0("FROM read_csv(", travel_matrix, ", auto_detect=true, header=true,  nullstr='", csv_null_string, "') AS a"),
