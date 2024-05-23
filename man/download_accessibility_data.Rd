@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_accessibility_data.R
 \name{download_accessibility_data}
 \alias{download_accessibility_data}
-\title{Download and Extract Accessibility Indicators Dataset for GB}
+\title{Download and extract Accessibility Indicators Dataset for GB}
 \usage{
 download_accessibility_data(
   force_update = FALSE,
@@ -25,5 +25,5 @@ This function downloads the accessibility indicators dataset for Great Britain f
 extracts the content, and then removes the ZIP file.
 }
 \examples{
-download_extract_GB_data()
+download_accessibility_data()
 }

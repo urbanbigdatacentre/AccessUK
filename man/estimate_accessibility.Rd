@@ -9,19 +9,22 @@ estimate_accessibility(
   travel_cost = NULL,
   weights = NULL,
   time_cut = NULL,
-  additional_group = NULL
+  additional_group = NULL,
+  csv_null_string = "NA"
 )
 }
 \arguments{
-\item{travel_matrix}{A directory containing one or more \code{.parquet} or \code{.csv} files in R5R output format.}
+\item{travel_matrix}{A path file or directory containing more than one \code{.parquet} or \code{.csv} files in R5R output format.}
 
-\item{travel_cost}{A string representing the name of the column to use for $c_ij$.}
+\item{travel_cost}{A string representing the name of the column to use for travel cost $c_ij$.}
 
 \item{weights}{A data frame with a column 'id' and one or more columns representing the weights of opportunities at destinations.}
 
 \item{time_cut}{A numeric vector representing the threshold in cumulative accessibility measures, $t$.}
 
 \item{additional_group}{A string indicating if the output should be grouped by an additional column in the travel_matrix, e.g. time of day.}
+
+\item{csv_null_string}{A string indicating how null values are stored in a CSV file. Default "NA".}
 }
 \value{
 A data frame containing computed accessibility values for each time cut and weight column.
