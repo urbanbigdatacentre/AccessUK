@@ -180,7 +180,7 @@ retail_accessibility %>%
   theme_void()
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-1.png" width="100%" />
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ### 3. Compute new accessibility measures
 
@@ -239,7 +239,7 @@ new_accessibility %>%
   theme_void()
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-8-1.png" width="100%" />
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ## Citation
 
