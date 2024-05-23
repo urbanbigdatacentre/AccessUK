@@ -39,6 +39,7 @@
 #'   \item Ensure that your use of the Information does not breach the Data Protection Act 1998 or the Privacy and Electronic Communications (EC Directive) Regulations 2003.
 #' }
 #'
+#' @export
 #' @examples
 #' \dontrun{
 #' data(retail_points)
