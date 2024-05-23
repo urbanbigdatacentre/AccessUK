@@ -61,15 +61,14 @@ my_accessibility <- function(
     destination_type <- 'point'
   }
 
+  # Check if accessibility directory exists and has data, if not, download the data
+  data_dir <- download_accessibility_data()
+  # Set PTAI TTM file path
+  ttm_path <- list.files(data_dir, pattern = 'ttm_pt', recursive = TRUE, full.names = TRUE)
+
   if (destination_type == 'point') {
     # Aggregate destinations by LSOA
     destinations_aggregated <- aggregate_destinations(destinations)
-
-    # Check if accessibility directory exists and has data, if not, download the data
-    data_dir <- download_accessibility_data()
-
-    # Set TTM file path
-    ttm_path <- list.files(data_dir, pattern = 'ttm_pt', recursive = TRUE, full.names = TRUE)
   } else if (destination_type == 'aggregated') {
     destinations_aggregated <- destinations
   }
