@@ -11,6 +11,7 @@
 #'                It must contain an 'id' column and one or more weight columns.
 #' @param additional_group Optional. A column name for additional grouping in the SQL query.
 #'                         Default is `NULL`.
+#' #' @param csv_null_string A string indicating how null values are stored in a CSV file. Default "NA".
 #'
 #' @return A dataframe containing the nearest opportunities based on the given travel matrix,
 #'         travel cost, and weights.
@@ -32,13 +33,20 @@ estimate_nearest_opportunity <- function(
     travel_matrix = NULL,
     travel_cost = NULL,
     weights = NULL,
-    additional_group = NULL
+    additional_group = NULL,
+    csv_null_string = "NA"
 ) {
   # Establish DuckDB connection
   conn <- DBI::dbConnect(duckdb::duckdb())
 
-  # Format travel matrix directory depeding on type of file, ie. csv or .parquet
-  travel_matrix <- format_tm_directory(travel_matrix)
+  # Check if TTM is a CSV or Parquet file, if not format as directory
+  if(grepl("\\.csv$|\\.parquet$", travel_matrix)){
+    # Enclose file path with single quotation
+    travel_matrix <- paste0("'", travel_matrix, "'")
+  } else {
+    # Format travel matrix directory
+    travel_matrix <- format_tm_directory(travel_matrix)
+  }
 
   # Write weights at destination to the database
   DBI::dbWriteTable(conn, 'weights', weights, overwrite = TRUE)
@@ -74,6 +82,15 @@ estimate_nearest_opportunity <- function(
       LEFT JOIN weights AS b ON a.to_id = b.id
       GROUP BY a.from_id, ", additional_group, "
       ORDER BY ", additional_group, ", a.from_id;"
+    )
+  }
+
+  # If TTM is in CSV format, use explicit read_csv function
+  if (grepl("\\.csv'$", travel_matrix)) {
+    shortest_time_query <- gsub(
+      paste0("FROM ", travel_matrix, " AS a"),
+      paste0("FROM read_csv(", travel_matrix, ", auto_detect=true, header=true,  nullstr='", csv_null_string, "') AS a"),
+      shortest_time_query
     )
   }
 
