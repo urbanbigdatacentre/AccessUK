@@ -1,20 +1,17 @@
 #' Compute Accessibility Estimates
 #'
-#' This function computes custom accessibility estimates using precomputed travel time matrices from the PTAI dataset and user inputed destination data.
+#' This function computes custom accessibility estimates using precomputed travel time matrices from the PTAI dataset and user-inputted destination data.
 #' It can handle destinations represented by SF points or pre-aggregated weights by LSOA.
 #'
 #' @param destinations An SF object containing "POINT" geometries only or a data frame with weights aggregated by LSOA.
-#'                     If the object is not SF, it is assumed to be weights aggregated by LSOA.
+#'                     If the object is not SF, it is assumed to be weights aggregated by LSOA. This parameter is required.
 #' @param time_cut A numeric vector specifying the time thresholds for the accessibility computation.
-#'                 This parameter cannot be empty.
+#'                 This parameter is required and cannot be empty.
 #' @param additional_group Optional. A character string specifying an additional grouping variable.
-#' @param destination_type A character string specifying the type of destinations.
-#'                         Can be 'point' for SF points or 'aggregated' for weights aggregated by LSOA.
-#'                         Defaults to 'point'.
 #'
 #' @details
 #' If `destinations` is an SF object, the function aggregates destinations by LSOA.
-#' In the background it uses 2011 geometries source from InFuse UK Data Service layers.
+#' In the background, it uses 2011 geometries sourced from InFuse UK Data Service layers.
 #' Please read the user Terms and Conditions.
 #'
 #' @return A data frame containing the computed accessibility estimates.
@@ -30,37 +27,37 @@
 #' # Run function
 #' my_accessibility(
 #'   destinations = destinations,
-#'   time_cut = c(30, 45, 60),
-#'   destination_type = 'point'
+#'   time_cut = c(30, 45, 60)
 #' )
 #'
 #' # Example usage with aggregated data
 #' weights_aggregated <- data.frame(
-#'   id = c("LSOA1", "LSOA2", "LSOA3"),
-#'   weight = c(10, 20, 30)
+#'   id = c("E01000825", "E01000824", "E01000812"),
+#'   n = c(10, 20, 30)
 #' )
 #'
 #' my_accessibility(
 #'   destinations = weights_aggregated,
-#'   time_cut = c(30, 45, 60),
-#'   destination_type = 'aggregated'
+#'   time_cut = c(30, 45, 60)
 #' )
 #' }
 #'
 #' @importFrom sf st_as_sf st_geometry_type st_crs st_transform st_intersection st_read
 #' @importFrom checkmate assert_logical
 #' @export
-#'
 my_accessibility <- function(
-    destinations = NULL,
-    time_cut = NULL,
-    additional_group = NULL,
-    destination_type = 'point'
+    destinations,
+    time_cut,
+    additional_group = NULL
 ) {
+  # Ensure required arguments are provided
+  stopifnot(!is.null(destinations), !is.null(time_cut))
 
   # If the destinations object is not SF, it is assumed to be a weights type aggregated by LSOA
   if (!any(grepl("sf", class(destinations)))) {
-    destination_type = 'aggregated'
+    destination_type <- 'aggregated'
+  } else {
+    destination_type <- 'point'
   }
 
   if (destination_type == 'point') {
