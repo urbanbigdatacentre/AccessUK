@@ -1,4 +1,4 @@
-#' Retrieve Travel Time Matrix Data
+#' Retrieve travel time data
 #'
 #' Retrieves the travel time matrix (TTM) data by public transport based on a given origin.
 #'
@@ -13,9 +13,9 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' travel_time(from = "S01006616")
+#' get_travel_time(from = "S01006616")
 #' }
-travel_time <- function(from = NULL) {
+get_travel_time <- function(from = NULL) {
   data_dir <- system.file("data", package = "AccessUK")
 
   # Check if data directory exists and has data
