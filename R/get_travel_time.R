@@ -19,9 +19,7 @@ get_travel_time <- function(from = NULL) {
   data_dir <- system.file("data", package = "AccessUK")
 
   # Check if data directory exists and has data
-  if (!dir.exists(data_dir) || length(list.files(data_dir)) == 0) {
     download_accessibility_data()
-  }
 
   # List of files
   all_files <- list.files(data_dir, recursive = TRUE, full.names = TRUE)
@@ -44,7 +42,7 @@ get_travel_time <- function(from = NULL) {
               allow_quoted_nulls=true,
               nullstr='NA'
               )
-      WHERE fromId in (", rows_string, ");
+      WHERE from_id in (", rows_string, ");
     ")
     ttm <- DBI::dbGetQuery(con, query)
   } else {
