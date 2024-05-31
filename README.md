@@ -1,6 +1,8 @@
 AccessUK
 ================
 
+<img align="right" src="man/figures/logo.png" alt="logo" width="180">
+
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
