@@ -11,15 +11,17 @@ Easily streamline accessibility measures for Great Britain.
 `AccessUK` is an open-source tool for the R programming language
 designed to streamline the integration of accessibility measures into R
 workflows focusing on Great Britain (GB), thereby unlocking the
-potential of spatial data and analysis by informing decision-making
-processes and supporting sustainable practices across diverse sectors.
+potential of spatial data by informing decision-making processes and
+supporting sustainable practices across diverse sectors.
 
 The main aim of this tool is to manage and distribute a series of
 pre-computed Accessibility-related measures for small geographic areas
 in GB described
 [here](https://www.nature.com/articles/s41597-023-02890-w) (PTAI
-dataset). It offers additional functions that enable users to customise
-or create new accessibility measures.
+dataset). The pre-computed measures include accessibility to employmnet,
+heath, education, food services, and urban centres. It offers additional
+functions that enable users to customise or create new accessibility
+measures.
 
 `AccessUK` uses [`DuckDB`](https://duckdb.org/), a relational database
 management system optimised for analytical workloads, in the background.
@@ -109,7 +111,7 @@ glimpse(accessibility_london)
 ## $ employment_pct_120 <dbl> 31.91657, 32.02396, 32.22901, 31.19395, 31.00741, 3…
 ```
 
-The results includes both the absolute employment available for a range
+The results include both the absolute employment available for a range
 of travel times in minutes as well as the relative employment in
 percent.
 
@@ -155,7 +157,7 @@ central London.
 # Read LSOA geometries
 lsoa_geoms <- st_read(file.path(data_dir, 'lsoa_geoms/infuse_lsoa_lyr_2011_clipped.shp'))
 ## Reading layer `infuse_lsoa_lyr_2011_clipped' from data source 
-##   `C:\Users\jvt3d\AppData\Local\Programs\R\R-4.3.0\library\AccessUK\data\lsoa_geoms\infuse_lsoa_lyr_2011_clipped.shp' 
+##   `/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/AccessUK/data/lsoa_geoms/infuse_lsoa_lyr_2011_clipped.shp' 
 ##   using driver `ESRI Shapefile'
 ## Simple feature collection with 42619 features and 3 fields
 ## Geometry type: MULTIPOLYGON

@@ -5,6 +5,7 @@ output: github_document
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  dpi=300,
   collapse = TRUE,
   message = FALSE
 )
@@ -14,14 +15,13 @@ knitr::opts_chunk$set(
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
-
 Easily streamline accessibility measures for Great Britain.
 
 ## Introduction
 
-`AccessUK` is an open-source tool for the R programming language designed to streamline the integration of accessibility measures into R workflows focusing on Great Britain (GB), thereby unlocking the potential of spatial data and analysis by informing decision-making processes and supporting sustainable practices across diverse sectors.
+`AccessUK` is an open-source tool for the R programming language designed to streamline the integration of accessibility measures into R workflows focusing on Great Britain (GB), thereby unlocking the potential of spatial data by informing decision-making processes and supporting sustainable practices across diverse sectors.
 
-The main aim of this tool is to manage and distribute a series of pre-computed Accessibility-related measures for small geographic areas in GB described [here](https://www.nature.com/articles/s41597-023-02890-w) (PTAI dataset). It offers additional functions that enable users to customise or create new accessibility measures.
+The main aim of this tool is to manage and distribute a series of pre-computed Accessibility-related measures for small geographic areas in GB described [here](https://www.nature.com/articles/s41597-023-02890-w) (PTAI dataset). The pre-computed measures include accessibility to employmnet, heath, education, food services, and urban centres. It offers additional functions that enable users to customise or create new accessibility measures.
 
 `AccessUK` uses [`DuckDB`](https://duckdb.org/), a relational database management system optimised for analytical workloads, in the background. This facilitates the rapid execution of queries without loading the full data into virtual memory. This mitigates common computational challenges associated with large travel matrices.
 
@@ -72,7 +72,7 @@ accessibility_london <- get_accessibility(
 )
 glimpse(accessibility_london)
 ```
-The results includes both the absolute employment available for a range of travel times in minutes as well as the relative employment in percent.
+The results include both the absolute employment available for a range of travel times in minutes as well as the relative employment in percent.
 
 ### 2. Tailored accessibility measures
 
