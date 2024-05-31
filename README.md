@@ -157,7 +157,7 @@ central London.
 # Read LSOA geometries
 lsoa_geoms <- st_read(file.path(data_dir, 'lsoa_geoms/infuse_lsoa_lyr_2011_clipped.shp'))
 ## Reading layer `infuse_lsoa_lyr_2011_clipped' from data source 
-##   `/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/AccessUK/data/lsoa_geoms/infuse_lsoa_lyr_2011_clipped.shp' 
+##   `C:\Users\jvt3d\AppData\Local\Programs\R\R-4.3.0\library\AccessUK\data\lsoa_geoms\infuse_lsoa_lyr_2011_clipped.shp' 
 ##   using driver `ESRI Shapefile'
 ## Simple feature collection with 42619 features and 3 fields
 ## Geometry type: MULTIPOLYGON
