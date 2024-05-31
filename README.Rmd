@@ -16,10 +16,6 @@ knitr::opts_chunk$set(
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
-Easily streamline accessibility measures for Great Britain.
-
-## Introduction
-
 `AccessUK` is an open-source tool for the R programming language designed to streamline the integration of accessibility measures into R workflows focusing on Great Britain (GB), thereby unlocking the potential of spatial data by informing decision-making processes and supporting sustainable practices across diverse sectors.
 
 The main aim of this tool is to manage and distribute a series of pre-computed Accessibility-related measures for small geographic areas in GB described [here](https://www.nature.com/articles/s41597-023-02890-w) (PTAI dataset). The pre-computed measures include accessibility to employmnet, heath, education, food services, and urban centres. It offers additional functions that enable users to customise or create new accessibility measures.

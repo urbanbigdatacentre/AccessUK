@@ -6,10 +6,6 @@ AccessUK
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
-Easily streamline accessibility measures for Great Britain.
-
-## Introduction
-
 `AccessUK` is an open-source tool for the R programming language
 designed to streamline the integration of accessibility measures into R
 workflows focusing on Great Britain (GB), thereby unlocking the
