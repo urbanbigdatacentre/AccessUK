@@ -1,65 +1,101 @@
+
 #' Download and extract Accessibility Indicators Dataset for GB
 #'
-#' This function downloads the accessibility indicators dataset for Great Britain from Zenodo,
-#' extracts the content, and then removes the ZIP file.
+#' Downloads the accessibility indicators dataset for Great Britain from Zenodo.
+#' If Zenodo download fails or is too slow, falls back to an alternative URL.
 #'
-#' @param force_update Logical, whether to re-download the data if it already exists.
-#' @param data_dir The directory where the data should be stored. Default is "data" in the package's installation directory.
-#' @param quiet Logical, suppresses messages when set to TRUE.
+#' @param force_update Logical; re-download even if data exists.
+#' @param data_dir Directory where data should be stored.
+#' @param quiet Logical; suppress messages when TRUE.
+#' @param timeout Numeric; total timeout per attempt in seconds (default 3600).
+#' @param low_speed_limit Numeric; abort if speed < this (Mb/sec) for low_speed_time (default 512 bytes/sec).
+#' @param low_speed_time Numeric; duration in seconds to trigger low-speed abort (default 120).
+#' @param max_attempts Integer; number of attempts per source (default 2).
 #'
 #' @return Path to the extracted data directory invisibly.
 #' @export
-#' @examples
-#' download_accessibility_data()
-
-download_accessibility_data <- function(force_update = FALSE, data_dir = system.file(package = "AccessUK"), quiet = FALSE) {
-  # Check input
+download_accessibility_data <- function(
+    force_update = FALSE,
+    data_dir = system.file(package = "AccessUK"),
+    quiet = FALSE,
+    timeout = 3600,
+    low_speed_limit = 5,   # 5 MB/s
+    low_speed_time = 120,    # 2 minutes
+    max_attempts = 2
+) {
+  # Validate inputs
   checkmate::assert_logical(force_update)
   checkmate::assert_logical(quiet)
+  checkmate::assert_number(timeout, lower = 30)
+  checkmate::assert_number(low_speed_limit, lower = 1)
+  checkmate::assert_number(low_speed_time, lower = 10)
+  checkmate::assert_int(max_attempts, lower = 1)
 
-  # Update timeout option temporarily
+  # Set timeout globally
   old_options <- options()
   on.exit(options(old_options), add = TRUE)
-  options(timeout = max(3600, getOption("timeout")))
+  options(timeout = max(timeout, getOption("timeout")))
 
-  # Out directory
-  data_dir <- file.path(data_dir, 'data')
+  # Prepare directories
+  data_dir <- file.path(data_dir, "data")
+  if (!dir.exists(data_dir)) dir.create(data_dir, recursive = TRUE)
 
-  # Define URLs and paths
-  url <- "https://zenodo.org/record/8037156/files/accessibility_indicators_gb.zip?download=1"
-  zip_file <- file.path(data_dir, "accessibility_indicators_gb.zip")
-
-  # Check if data directory exists, and if not, create it
-  if (!dir.exists(data_dir)) {
-    dir.create(data_dir, recursive = TRUE)
-  }
-
-  # Check if data already exists and handle force_update
-  accessibility_dir <- file.path(data_dir, 'accessibility_indicators_gb')
+  accessibility_dir <- file.path(data_dir, "accessibility_indicators_gb")
   if (dir.exists(accessibility_dir) && !force_update) {
     if (!quiet) message("Using cached accessibility data.")
     return(invisible(data_dir))
   }
 
-  # Download the ZIP file
-  if (!quiet) message("Downloading accessibility data to ", zip_file, ".\nThis can take a few minute the first time is run.")
-  utils::download.file(url, destfile = zip_file, mode = 'wb')
+  # URLs
+  zenodo_url <- "https://zenodo.org/record/8037156/files/accessibility_indicators_gb.zip?download=1"
+  fallback_url <- "https://ubdcdcstageadmin.blob.core.windows.net/dc-os/26/open-release-ptai-2021_28062022.zip?se=2025-12-02T12%3A04%3A16Z&sp=r&sv=2025-01-05&sr=b&sig=ME4EMW4xgpz5vi5UOIMcRFlrX3/bQSYDPbFoy3EXul0%3D"
+  zip_file <- file.path(data_dir, "accessibility_indicators_gb.zip")
 
-  # Unzip the file
+  # Transform MB to Kb
+  low_speed_limit <- low_speed_limit * 1024 * 1024
+
+  # Helper: download with retry and low-speed detection
+  download_attempt <- function(url, destfile, label) {
+    for (i in seq_len(max_attempts)) {
+      if (!quiet) message(sprintf("Downloading from %s (attempt %d)...", label, i))
+      h <- curl::new_handle()
+      curl::handle_setopt(
+        h,
+        timeout = timeout,
+        low_speed_time = low_speed_time,
+        low_speed_limit = low_speed_limit
+      )
+      ok <- TRUE
+      try({
+        curl::curl_download(url, destfile = destfile, mode = "wb", handle = h)
+      }, silent = TRUE) -> err
+      if (file.exists(destfile) && file.info(destfile)$size > 0) return(TRUE)
+      Sys.sleep(2 ^ i) # simple backoff
+    }
+    FALSE
+  }
+
+  # Try Zenodo first
+  if (!quiet) message("Downloading accessibility data from Zenodo...")
+  success <- download_attempt(zenodo_url, zip_file, "Zenodo")
+
+  # Fallback if Zenodo fails
+  if (!success) {
+    if (!quiet) message("Zenodo download failed or too slow. Trying alternative source...")
+    success <- download_attempt(fallback_url, zip_file, "UBDC Azure Blob")
+    if (!success) stop("Failed to download data from both sources.")
+  }
+
+  # Unzip and clean up
   unzip(zip_file, exdir = data_dir)
-
-  # Remove the ZIP file
   file.remove(zip_file)
 
-  # Adjust headers in TTM to make it compatible with new R5R output
-  # Set TTM file path
-  ttm_path <- list.files(data_dir, pattern = 'ttm_pt', recursive = TRUE, full.names = TRUE)
-  # New TTM headers
+  # Adjust headers in TTM
+  ttm_path <- list.files(data_dir, pattern = "ttm_pt", recursive = TRUE, full.names = TRUE)
   new_header <- c("from_id", "to_id", "travel_time_p25", "travel_time_p50", "travel_time_p75")
-  # Change names
   change_csv_header(ttm_path, new_header)
 
-
-  # Return data dir
-  return(invisible(data_dir))
+  invisible(data_dir)
 }
+
+
