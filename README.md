@@ -32,21 +32,21 @@ associated with large travel matrices.
 To install the latest version of `AccessUK` directly from GitHub, please
 follow the steps below:
 
-### 1. Install the `devtools` package (if not already installed)
+### 1. 📦 Install the `pacman` package (if not already installed)
 
-You’ll need the `devtools` package to install R packages from GitHub. If
+You’ll need the `pacman` package to install R packages from GitHub. If
 you don’t have it installed, run:
 
 ``` r
-install.packages("devtools")
+install.packages("pacman")
 ```
 
-### 2. Install AccessUK
+### 2. 🚀 Install AccessUK
 
-With devtools installed, you can now install the AccessUK package:
+With `pacman` installed, you can now install the AccessUK package:
 
 ``` r
-devtools::install_github("urbanbigdatacentre/AccessUK")
+pacman::p_load_gh("urbanbigdatacentre/AccessUK")
 ```
 
 ## Usage
@@ -137,6 +137,9 @@ retail_accessibility <- my_accessibility(
 )
 ## Warning: attribute variables are assumed to be spatially constant throughout
 ## all geometries
+```
+
+``` r
 
 glimpse(retail_accessibility)
 ## Rows: 41,729
@@ -155,13 +158,16 @@ central London.
 # Read LSOA geometries
 lsoa_geoms <- st_read(file.path(data_dir, 'lsoa_geoms/infuse_lsoa_lyr_2011_clipped.shp'))
 ## Reading layer `infuse_lsoa_lyr_2011_clipped' from data source 
-##   `C:\Users\jvt3d\AppData\Local\Programs\R\R-4.3.0\library\AccessUK\data\lsoa_geoms\infuse_lsoa_lyr_2011_clipped.shp' 
+##   `/Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/AccessUK/data/lsoa_geoms/infuse_lsoa_lyr_2011_clipped.shp' 
 ##   using driver `ESRI Shapefile'
 ## Simple feature collection with 42619 features and 3 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -69.1254 ymin: 5337.9 xmax: 655604.7 ymax: 1220302
 ## Projected CRS: OSGB36 / British National Grid
+```
+
+``` r
 # Map
 retail_accessibility %>% 
   filter(from_id %in% lsoa_london) %>% 
@@ -195,6 +201,9 @@ aggregated_retail <- retail_points %>%
   my_accessibility(0)
 ## Warning: attribute variables are assumed to be spatially constant throughout
 ## all geometries
+```
+
+``` r
 # First column as 'id'
 aggregated_retail <- aggregated_retail %>% 
   rename(retail = access_n_0, id = from_id)
