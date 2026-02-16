@@ -62,11 +62,19 @@ get_accessibility <- function(
     # Convert the vector to a comma-separated string
     rows_string <- paste(sprintf("'%s'", from), collapse = ",")
     query <- paste0("SELECT * FROM '", access_file, "' WHERE geo_code in (", rows_string, ");")
-    access_indices <- DBI::dbGetQuery(con, query)
+
   } else {
     query <- paste0("SELECT * FROM '", access_file, ";")
-    access_indices <- DBI::dbGetQuery(con, query)
   }
+
+  # Run query
+  access_indices <- DBI::dbGetQuery(con, query)
+
+  # Identify columns that do not start with 'geo'
+  non_geo_cols <- !grepl("^geo", colnames(access_indices))
+
+  # Apply as.numeric to those columns
+  access_indices[ , non_geo_cols] <- lapply(access_indices[ , non_geo_cols], as.numeric)
 
   # Close connection
   DBI::dbDisconnect(con, shutdown=TRUE)

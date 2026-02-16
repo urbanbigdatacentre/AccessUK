@@ -34,21 +34,21 @@ associated with large travel matrices.
 To install the latest version of `AccessUK` directly from GitHub, please
 follow the steps below:
 
-### 1. Install the `devtools` package (if not already installed)
+### 1. 📦 Install the `pacman` package (if not already installed)
 
-You’ll need the `devtools` package to install R packages from GitHub. If
+You’ll need the `pacman` package to install R packages from GitHub. If
 you don’t have it installed, run:
 
 ``` r
-install.packages("devtools")
+install.packages("pacman")
 ```
 
-### 2. Install AccessUK
+### 2. 🚀 Install AccessUK
 
-With devtools installed, you can now install the AccessUK package:
+With `pacman` installed, you can now install the AccessUK package:
 
 ``` r
-devtools::install_github("urbanbigdatacentre/AccessUK")
+pacman::p_load_gh("urbanbigdatacentre/AccessUK")
 ```
 
 ## Usage
