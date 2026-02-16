@@ -8,13 +8,15 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 `AccessUK` is an open-source tool for the R programming language
 designed to streamline the integration of accessibility measures into R
-workflows focusing on Great Britain (GB), thereby unlocking the
-potential of spatial data by informing decision-making processes and
-supporting sustainable practices across diverse sectors.
+workflows focusing on Great Britain (GB). It unlocks the potential of
+spatial data by informing decision-making processes and supporting
+practices across diverse sectors, without the inherited complexities and
+technical demands.
 
 The main aim of this tool is to manage and distribute a series of
 pre-computed Accessibility-related measures for small geographic areas
-in GB described
+in GB, i.e. every LSOA/Data Zone in England, Wales, and Scotland. The
+underlying data is described
 [here](https://www.nature.com/articles/s41597-023-02890-w) (PTAI
 dataset). The pre-computed measures include accessibility to employmnet,
 heath, education, food services, and urban centres. It offers additional
@@ -51,12 +53,14 @@ pacman::p_load_gh("urbanbigdatacentre/AccessUK")
 
 ## Usage
 
-`AccessUK` does three main things: (1) get ready-to-use accessibility
-measures for a range of urban and regional services; (2) tailor
-accessibility measures to destinations not previously included in the
-dataset based on pre-computed travel matrices; (3) estimate new
-accessibility measures based on user-generated TTMs and service
-locations.
+`AccessUK` does three main things:
+
+1.  Get ready-to-use accessibility measures for a range of urban and
+    regional services;
+2.  Tailor accessibility measures to destinations not previously
+    included in the dataset based on pre-computed travel matrices;
+3.  Estimate new accessibility measures based on user-generated TTMs and
+    service locations.
 
 ``` r
 library(AccessUK)
@@ -86,6 +90,7 @@ accessibility_london <- get_accessibility(
   service = 'employment', 
   mode = "public_transport"
 )
+
 glimpse(accessibility_london)
 ## Rows: 40
 ## Columns: 18
@@ -168,6 +173,7 @@ lsoa_geoms <- st_read(file.path(data_dir, 'lsoa_geoms/infuse_lsoa_lyr_2011_clipp
 ```
 
 ``` r
+
 # Map
 retail_accessibility %>% 
   filter(from_id %in% lsoa_london) %>% 
@@ -218,6 +224,7 @@ new_accessibility <- estimate_accessibility(
   weights = aggregated_retail, 
   time_cut = timecuts
 )
+
 glimpse(new_accessibility)
 ## Rows: 41,729
 ## Columns: 4
